@@ -47,7 +47,17 @@ Variables
 ====================================================
 */
 
-API_Key := "Your_API_Key_Here"
+ConfigFile := A_ScriptDir "\config.ini"
+if !FileExist(ConfigFile){
+    IB := InputBox("Please enter your OpenAI API key", "OpenAI API key")
+    if IB.Result = "Cancel"
+        ExitApp
+    API_Key := IB.Value
+    IniWrite API_Key, ConfigFile, "OpenAI", "API_Key"
+}
+else
+    API_Key := IniRead(ConfigFile, "OpenAI", "API_Key")
+
 API_URL := "https://api.openai.com/v1/chat/completions"
 Status_Message := ""
 Response_Window_Status := "Closed"
